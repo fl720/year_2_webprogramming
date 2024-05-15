@@ -33,7 +33,7 @@ function createDB() {
     db.run(sql) ; 
 }
 
-// INSERT DATA INTO DATABASE 
+// INSERT TEST DATA INTO DATABASE 
 function insertTestData() { 
     sql = 'INSERT INTO users( f_name , l_name, username, password, email ) VALUES (?,?,?,?,? ) ' ; 
     db.run( sql , ["Fred" , "Lewis" ,"FL" , "Admin12345" , "test2@gmail.com"] , (err)=> {
@@ -58,7 +58,7 @@ function insertTestData() {
 } 
 
 
-// --------------------- OPERATION FUNCTION FOR DB -------------------------
+// ========================= OPERATION FUNCTION FOR DB =========================
 function getAllUsers() { 
     sql = `SELECT * FROM users` ; 
     db.all(sql,[], (err, rows) => {
@@ -93,6 +93,41 @@ function updateUsertoDB(userDetails) {
     } ) ; 
 }
 
+function updateActivity( activity) {
+    const { user_id , name , description, shared } = JSON.parse(activity);
+    // const { user_id , name , description, shared } = activity;
+
+    let sql ; 
+    sql = 'INSERT INTO HIIT_activities ( user_id , name , description, shared ) VALUES (?,?,? ) ' ; 
+    db.run( sql , [user_id , name , description, shared] , (err)=> {
+        if (err) return console.error(err.message) ; 
+    } ) ; 
+}
+
+function updateSetting( setting ) {
+    const { activity_id, difficulty_level , color  } = JSON.parse(setting);
+    // const { activity_id, difficulty_level , color  } = setting;
+
+    let sql ; 
+    sql = 'INSERT INTO HIIT_settings (activity_id, difficulty_level , color  ) VALUES (?,?,? ) ' ; 
+    db.run( sql , [activity_id, difficulty_level , color ] , (err)=> {
+        if (err) return console.error(err.message) ; 
+    } ) ; 
+}
+
+function updateHistory( activity_log ) {
+    const { user_id , activity_id , dates } = JSON.parse(activity_log);
+    // const { user_id , activity_id , dates } = activity_log;
+
+    let sql ; 
+    sql = 'INSERT INTO History( user_id , activity_id , dates ) VALUES (?,?,? ) ' ; 
+    db.run( sql , [user_id , activity_id , dates ] , (err)=> {
+        if (err) return console.error(err.message) ; 
+    } ) ; 
+}
+
+
+// -------------- CHANGE DATA ---------------
 function changeUsername( newInfo ) {  
     const { username, user_id } = JSON.parse(newInfo);
     // const { username, user_id } = newInfo;
@@ -123,7 +158,7 @@ function changeUserEmail( newInfo ) {
 function changeSetting( newInfo ) {  
     const { activity_id , difficulty_level , color } = JSON.parse(newInfo);
     // const { activity_id , difficulty_level , color } = newInfo ; 
-    let sql = 'UPDATE HIIT_settings SET difficulty_level = ? , color = ? WHERE user_id = ?  ' ;
+    let sql = 'UPDATE HIIT_settings SET difficulty_level = ? , color = ? WHERE activity_id = ?  ' ;
     db.run( sql, [difficulty_level , color , activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
@@ -132,7 +167,7 @@ function changeSetting( newInfo ) {
 function changeActivityName( newInfo ) {  
     const { activity_id , name } = JSON.parse(newInfo);
     // const { activity_id , name } = newInfo ; 
-    let sql = 'UPDATE HIIT_activities SET name = ? WHERE user_id = ?  ' ;
+    let sql = 'UPDATE HIIT_activities SET name = ? WHERE activity_id = ?  ' ;
     db.run( sql, [name, activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
@@ -141,7 +176,7 @@ function changeActivityName( newInfo ) {
 function changeActivityDescription( newInfo ) {  
     const { activity_id , description } = JSON.parse(newInfo);
     // const { activity_id , description } = newInfo ;
-    let sql = 'UPDATE HIIT_activities SET description = ? WHERE user_id = ?  ' ;
+    let sql = 'UPDATE HIIT_activities SET description = ? WHERE activity_id = ?  ' ;
     db.run( sql, [description, activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
@@ -150,11 +185,48 @@ function changeActivityDescription( newInfo ) {
 function changeActivityShareability( newInfo ) {  
     const { activity_id , shared } = JSON.parse(newInfo);
     // const { activity_id , shared } = newInfo ;
-    let sql = 'UPDATE HIIT_activities SET shared = ? WHERE user_id = ?  ' ;
+    let sql = 'UPDATE HIIT_activities SET shared = ? WHERE activity_id = ?  ' ;
     db.run( sql, [shared, activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
+
+
+// -------------- DELETION ---------------
+function deleteUser( id ) { 
+    const { user_id } = JSON.parse(id);
+    // const { user_id } = id ; 
+
+    let sql = 'DELETE FROM users WHERE user_id = ? ' ; 
+    db.run( sql, [user_id] , (err)=> {
+        if (err) return console.error(err.message) ;
+    } ) ; 
+}
+
+function deleteActivity( id ) { 
+    const { activity_id } = JSON.parse(id);
+    // const { activity_id } = id ; 
+
+    let sql = 'DELETE FROM HIIT_activities WHERE activity_id = ? ' ; 
+    db.run( sql, [activity_id] , (err)=> {
+        if (err) return console.error(err.message) ;
+    } ) ; 
+    sql = 'DELETE FROM HIIT_settings WHERE activity_id = ? ' ; 
+    db.run( sql, [activity_id] , (err)=> {
+        if (err) return console.error(err.message) ;
+    } ) ; 
+}
+
+function deleteHistory( id ) { 
+    const { history_id } = JSON.parse(id);
+    // const { history_id } = id ; 
+
+    let sql = 'DELETE FROM HIIT_activities WHERE history_id = ? ' ; 
+    db.run( sql, [history_id] , (err)=> {
+        if (err) return console.error(err.message) ;
+    } ) ; 
+}
+
 
 function closeDB()
 {
