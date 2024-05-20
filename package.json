@@ -1,7 +1,7 @@
 {
-  "name": "setap23-24_coursework",
+  "name": "coursework",
   "version": "1.0.0",
-  "description": "Members\r UP2122177 — JamesWicks01\r UP2113294 — bennnnnnwest\r UP2154598 — fl720\r UP2106696 — GeorgeLazos\r UP2104647 — up2104647\r UP2111821 — nabmat",
+  "description": "HIIT APP",
   "main": "server.mjs",
   "type": "commonjs",
   "scripts": {
@@ -22,13 +22,5 @@
     "eslint-config-portsoc": "^1.0.1",
     "jest": "^29.7.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SETAP-Group4A/SETAP23-24_Coursework.git"
-  },
-  "keywords": [],
-  "bugs": {
-    "url": "https://github.com/SETAP-Group4A/SETAP23-24_Coursework/issues"
-  },
-  "homepage": "https://github.com/SETAP-Group4A/SETAP23-24_Coursework#readme"
+  "keywords": []
 }

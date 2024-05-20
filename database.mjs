@@ -6,7 +6,6 @@ const db = new sqlite3.Database('./database.sqlite', sqlite3.OPEN_READWRITE, (er
         console.error(err.message);
     }
     console.log('Connection is a success');
-
 });
 
 // REFRESH-RELOAD TABLES
@@ -67,6 +66,8 @@ function getAllUsers() {
         }) ; 
     });
 }
+
+
 
 function listUsers() {
     results = []
@@ -232,6 +233,36 @@ function closeDB()
     }); 
 }
 
+// async function getPassword(user) {
+//     const sql = 'SELECT password FROM users WHERE username = ?';
+//     await db.get(sql, [user.username], (err, row) => {
+//         if (err) {
+//             console.error(err.message);
+//         } else if (row) {
+//             // console.log(`Password for user ${user.username}: ${row.password}`);
+//             return row.password ; 
+//         } else {
+//             // console.log(`No user found with username: ${user.username}`);
+//             return false ; 
+//         }
+//     });
+// }
+
+async function getPassword(user) {
+    const sql = 'SELECT password FROM users WHERE username = ?';
+    return new Promise((resolve, reject) => {
+        db.get(sql, [user.username], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row) {
+                resolve(row.password);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+}
+
 
 
 // ============================== test ==============================
@@ -242,6 +273,10 @@ const testuser = {
     password : 'Aa12345678', 
     email : 'KR123@gmail.com'
 }
+
+const testpasswordtrue = { username: "FL" , password: "Admin12345"} ; 
+const testpasswordfalse = { username: "KR" , password: "Aa123456"} ; 
+const testpassworduserfalse = { username: "KR123" , password: "Aa12345678"} ; 
 
 const newUsernameInfo = { username: "JLev" , user_id : 1 }  ; 
 
@@ -255,3 +290,21 @@ const newdescript = {activity_id : 1  , description : "On the ground, set your h
 // changeActivityShareability( shareable ) ; 
 // changeActivityDescription( newdescript ) ;
 // updateUsertoDB( testuser ) ; 
+// getAllUsers() ; 
+console.log(getPassword( testpasswordtrue )) ; 
+console.log(getPassword( testpasswordfalse )); 
+console.log(getPassword( testpassworduserfalse )); 
+
+(async () => {
+    try {
+        const passwordFromDB = await getPassword(testpasswordtrue);
+        if (passwordFromDB) {
+            const isMatch = testpasswordtrue.password === passwordFromDB;
+            console.log('Password match:', isMatch);
+        } else {
+            console.log('User not found');
+        }
+    } catch (err) {
+        console.error('Error fetching password:', err);
+    }
+})();
