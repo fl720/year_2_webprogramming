@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    /* align-items: center; */
+    justify-content: left;
+    height: 100vh;
+}
+
+.h2 {
+    text-align: right;
+}
+
+section {
+    background-color: rgb(178, 214, 255);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #6279ea;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #b0c3ef;
+}
+
+.switch_temp {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.switch_temp a {
+    color: red;
+    text-decoration: none;
+}
+
+.switch_temp a:hover {
+    text-decoration: underline;
+}
+
+.checkbox_container {
+    display: flex;
+    align-items: left;
+    margin-top: 12px;
+    
+}
+
+.toggle_password {
+    transform: scale(2);
+    align-items: right;
+    /* margin-right: 15px; */
+}
+
+.toggle_signup_password{
+    transform: scale(2);
+}
+
+.switch_form{
+    margin-top: 10px  ;
+    margin-bottom: 20px  ;
+}
