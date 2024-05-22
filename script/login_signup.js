@@ -150,32 +150,6 @@ function init() {
     const LoginButton = document.querySelector("#loginbutton");
     LoginButton.addEventListener('click', login);
 
-    let passwordSignUpInput = document.querySelector("#signup_password");
-    let passwordloginInput = document.querySelector("#login_password");
-    let passwordLoginHide = document.querySelector("#toggle_password");
-    let passwordSignUpHide = document.querySelector("#toggle_signup_password");
-    passwordLoginHide.addEventListener('click', function() {
-        if (passwordloginInput.type === 'password') {
-            passwordloginInput.type = 'text';
-            passwordLoginHide.textContent = 'Hide';
-            console.log("clicked") ; 
-        } else {
-            passwordloginInput.type = 'password';
-            passwordLoginHide.textContent = 'Show';
-            console.log("clicked") ; 
-        }
-    });
-
-    passwordSignUpHide.addEventListener('click', function() {
-        if (passwordSignUpInput.type === 'password') {
-            passwordSignUpInput.type = 'text';
-            passwordSignUpHide.textContent = 'Hide';
-        } else {
-            passwordSignUpInput.type = 'password';
-            passwordSignUpHide.textContent = 'Show';
-        }
-    });
-
 }
 
 window.addEventListener('load', init);
