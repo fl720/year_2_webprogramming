@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "HIIT APP",
   "main": "server.mjs",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test": "test",
     "start": "cd server && node server.mjs"

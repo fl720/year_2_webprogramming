@@ -55,7 +55,7 @@ function insertTestData() {
 
 
 // ========================= OPERATION FUNCTION FOR DB =========================
-function getAllUsers() { 
+export function getAllUsers() { 
     const sql = `SELECT * FROM users` ; 
     db.all(sql,[], (err, rows) => {
         if (err) {
@@ -69,20 +69,27 @@ function getAllUsers() {
 
 
 
-function listUsers() {
-    results = []
-    db.each(`SELECT user_id as id, name as name FROM users`, (err, row) => {
-        if (err) {
-            console.error(err.message);
-        }
-        results.push(row.id + "\t" + row.name);
+export function listUsers() {
+    return new Promise((resolve, reject) => {
+        const results = [];
+        db.each(`SELECT username as name FROM users`, (err, row) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                results.push(row.name);
+            }
+        }, (err, numberOfRows) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                resolve(results);
+            }
+        });
     });
-    return results
 }
 
-function updateUsertoDB(userDetails) {
-    const { f_name , l_name, username, password, email } = JSON.parse(userDetails);
-    // const { f_name , l_name, username, password, email } = userDetails;
+export function updateUsertoDB(userDetails) {
+    const { f_name , l_name, username, password, email } = userDetails;
 
     let sql ; 
     sql = 'INSERT INTO users( f_name , l_name, username, password, email ) VALUES (?,?,?,?,? ) ' ; 
@@ -91,9 +98,8 @@ function updateUsertoDB(userDetails) {
     } ) ; 
 }
 
-function updateActivity( activity) {
-    const { user_id , name , description, shared } = JSON.parse(activity);
-    // const { user_id , name , description, shared } = activity;
+export function updateActivity( activity) {
+    const { user_id , name , description, shared } = activity;
 
     const sql = 'INSERT INTO HIIT_activities ( user_id , name , description, shared ) VALUES (?,?,? ) ' ; 
     db.run( sql , [user_id , name , description, shared] , (err)=> {
@@ -101,9 +107,8 @@ function updateActivity( activity) {
     } ) ; 
 }
 
-function updateSetting( setting ) {
-    const { activity_id, difficulty_level , color  } = JSON.parse(setting);
-    // const { activity_id, difficulty_level , color  } = setting;
+export function updateSetting( setting ) {
+    const { activity_id, difficulty_level , color  } = setting;
 
     const sql = 'INSERT INTO HIIT_settings (activity_id, difficulty_level , color  ) VALUES (?,?,? ) ' ; 
     db.run( sql , [activity_id, difficulty_level , color ] , (err)=> {
@@ -111,9 +116,8 @@ function updateSetting( setting ) {
     } ) ; 
 }
 
-function updateHistory( activity_log ) {
-    const { user_id , activity_id , dates } = JSON.parse(activity_log);
-    // const { user_id , activity_id , dates } = activity_log;
+export function updateHistory( activity_log ) {
+    const { user_id , activity_id , dates } = activity_log;
 
     const sql = 'INSERT INTO History( user_id , activity_id , dates ) VALUES (?,?,? ) ' ; 
     db.run( sql , [user_id , activity_id , dates ] , (err)=> {
@@ -123,63 +127,56 @@ function updateHistory( activity_log ) {
 
 
 // -------------- CHANGE DATA ---------------
-function changeUsername( newInfo ) {  
-    const { username, user_id } = JSON.parse(newInfo);
-    // const { username, user_id } = newInfo;
+export function changeUsername( newInfo ) {  
+    const { username, user_id } = newInfo;
     const sql = 'UPDATE users SET username = ? WHERE user_id = ?  ' ;
     db.run( sql, [username, user_id] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function changeUserPassword( newInfo ) {  
-    const { password , user_id } = JSON.parse(newInfo);
-    // const { password , user_id } = newInfo;
+export function changeUserPassword( newInfo ) {  
+    const { password , user_id } = newInfo;
     const sql = 'UPDATE users SET password = ? WHERE user_id = ?  ' ;
     db.run( sql, [password , user_id] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function changeUserEmail( newInfo ) {  
-    const { email, user_id } = JSON.parse(newInfo);
-    // const { email, user_id } = newInfo;
+export function changeUserEmail( newInfo ) {  
+    const { email, user_id } = newInfo;
     const sql = 'UPDATE users SET email = ? WHERE user_id = ?  ' ;
     db.run( sql, [email, user_id] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function changeSetting( newInfo ) {  
-    const { activity_id , difficulty_level , color } = JSON.parse(newInfo);
-    // const { activity_id , difficulty_level , color } = newInfo ; 
+export function changeSetting( newInfo ) {  
+    const { activity_id , difficulty_level , color } = newInfo ; 
     const sql = 'UPDATE HIIT_settings SET difficulty_level = ? , color = ? WHERE activity_id = ?  ' ;
     db.run( sql, [difficulty_level , color , activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function changeActivityName( newInfo ) {  
-    const { activity_id , name } = JSON.parse(newInfo);
-    // const { activity_id , name } = newInfo ; 
+export function changeActivityName( newInfo ) {  
+    const { activity_id , name } = newInfo ; 
     const sql = 'UPDATE HIIT_activities SET name = ? WHERE activity_id = ?  ' ;
     db.run( sql, [name, activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function changeActivityDescription( newInfo ) {  
-    const { activity_id , description } = JSON.parse(newInfo);
-    // const { activity_id , description } = newInfo ;
+export function changeActivityDescription( newInfo ) {  
+    const { activity_id , description } = newInfo ;
     const sql = 'UPDATE HIIT_activities SET description = ? WHERE activity_id = ?  ' ;
     db.run( sql, [description, activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function changeActivityShareability( newInfo ) {  
-    const { activity_id , shared } = JSON.parse(newInfo);
-    // const { activity_id , shared } = newInfo ;
+export function changeActivityShareability( newInfo ) {  
+    const { activity_id , shared } = newInfo ;
     const sql = 'UPDATE HIIT_activities SET shared = ? WHERE activity_id = ?  ' ;
     db.run( sql, [shared, activity_id ] , (err)=> {
         if (err) return console.error(err.message) ;
@@ -188,19 +185,17 @@ function changeActivityShareability( newInfo ) {
 
 
 // -------------- DELETION ---------------
-function deleteUser( id ) { 
-    const { user_id } = JSON.parse(id);
-    // const { user_id } = id ; 
+export function deleteUser( userDetail ) { 
+    const { username } = userDetail ; 
 
-    const sql = 'DELETE FROM users WHERE user_id = ? ' ; 
+    const sql = 'DELETE FROM users WHERE username = ? ' ; 
     db.run( sql, [user_id] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-function deleteActivity( id ) { 
-    const { activity_id } = JSON.parse(id);
-    // const { activity_id } = id ; 
+export function deleteActivity( id ) { 
+    const { activity_id } = id ; 
 
     const sql = 'DELETE FROM HIIT_activities WHERE activity_id = ? ' ; 
     db.run( sql, [activity_id] , (err)=> {
@@ -212,9 +207,8 @@ function deleteActivity( id ) {
     } ) ; 
 }
 
-function deleteHistory( id ) { 
-    const { history_id } = JSON.parse(id);
-    // const { history_id } = id ; 
+export function deleteHistory( id ) { 
+    const { history_id } = id ; 
 
     const sql = 'DELETE FROM HIIT_activities WHERE history_id = ? ' ; 
     db.run( sql, [history_id] , (err)=> {
@@ -233,25 +227,11 @@ function closeDB()
     }); 
 }
 
-// async function getPassword(user) {
-//     const sql = 'SELECT password FROM users WHERE username = ?';
-//     await db.get(sql, [user.username], (err, row) => {
-//         if (err) {
-//             console.error(err.message);
-//         } else if (row) {
-//             // console.log(`Password for user ${user.username}: ${row.password}`);
-//             return row.password ; 
-//         } else {
-//             // console.log(`No user found with username: ${user.username}`);
-//             return false ; 
-//         }
-//     });
-// }
 
-async function getPassword(user) {
+export async function getPassword(user) {
     const sql = 'SELECT password FROM users WHERE username = ?';
     return new Promise((resolve, reject) => {
-        db.get(sql, [user.username], (err, row) => {
+        db.get(sql, [user], (err, row) => {
             if (err) {
                 reject(err);
             } else if (row) {
@@ -263,6 +243,35 @@ async function getPassword(user) {
     });
 }
 
+// export async function validateCorrectPassword(){
+//     try {
+//         const passwordFromDB = await getPassword(testpasswordtrue);
+//         if (passwordFromDB) {
+//             const isMatch = testpasswordtrue.password === passwordFromDB;
+//             return isMatch ; 
+//             // console.log('Password match:', isMatch);
+//         } else {
+//             console.log('User not found');
+//         }
+//     } catch (err) {
+//         console.error('Error fetching password:', err);
+//     }
+// };
+
+
+// let passwordVariable;
+// let res = getPassword(username )
+// res.then(password => {
+//         if (password) {
+//             passwordVariable = password; 
+//             console.log('Password:', passwordVariable);
+//         } else {
+//             console.log('User not found or no password set');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error fetching password:', error);
+//     });
 
 
 // ============================== test ==============================
@@ -291,20 +300,6 @@ const newdescript = {activity_id : 1  , description : "On the ground, set your h
 // changeActivityDescription( newdescript ) ;
 // updateUsertoDB( testuser ) ; 
 // getAllUsers() ; 
-console.log(getPassword( testpasswordtrue )) ; 
-console.log(getPassword( testpasswordfalse )); 
-console.log(getPassword( testpassworduserfalse )); 
-
-(async () => {
-    try {
-        const passwordFromDB = await getPassword(testpasswordtrue);
-        if (passwordFromDB) {
-            const isMatch = testpasswordtrue.password === passwordFromDB;
-            console.log('Password match:', isMatch);
-        } else {
-            console.log('User not found');
-        }
-    } catch (err) {
-        console.error('Error fetching password:', err);
-    }
-})();
+// console.log(getPassword( testpasswordtrue )) ; 
+// console.log(getPassword( testpasswordfalse )); 
+// console.log(getPassword( testpassworduserfalse )); 
