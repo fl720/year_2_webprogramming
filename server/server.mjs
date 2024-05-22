@@ -13,15 +13,18 @@ app.use( express.static(path.join(__dirname, "..", "client")) );
 
 // Use express.json() to resolve json data
 app.use(express.json());
+app.use(express.static("public")) ; 
 
 // SERVER GET REQUESTS
 app.get("/" , (req , res ) => {
-  res.sendFile(path.join(__dirname , ".." , "src" , "index.html" )) ; 
+  res.sendFile(path.join(__dirname , ".." , "page" , "index.html" )) ; 
 })
 
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "..", "client", "pages", "index.html"));
-// });
+app.get("/homepage" , (req , res ) => {
+  res.sendFile(path.join(__dirname , ".." , "page" , "homepage.html" )) ; 
+})
+
+
 
  
 async function getUsers(req, res) {
