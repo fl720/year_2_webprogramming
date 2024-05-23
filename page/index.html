@@ -4,85 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="../css/login_signup.css"> -->
+    <link rel="stylesheet" href="../css/login_signup.css">
 
     <title>YOUR HIIT</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: left;
-        }
-
-        section {
-            background-color: rgb(178, 214, 255);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 350px;
-
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #6279ea;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #b0c3ef;
-        }
-
-        .switch_temp {
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .switch_temp a {
-            color: red;
-            text-decoration: none;
-        }
-
-        .switch_temp a:hover {
-            text-decoration: underline;
-        }
-
-        .checkbox_container {
-            display: flex;
-            align-items: left;
-            margin-top: 12px;
-            
-        }
-
-        .toggle_password {
-            transform: scale(2);
-            align-items: right;
-            /* margin-right: 15px; */
-        }
-
-        .toggle_signup_password{
-            transform: scale(2);
-        }
-
-        .switch_form{
-            margin-top: 10px  ;
-            margin-bottom: 20px  ;
-        }
-    </style>
 </head>
 <body>
 
@@ -100,7 +24,7 @@
 
         <P class = "switch_form" style="color: red;" id = "login_error"></P>
         
-        <button id = "login_button">LOGIN HERE!</button>
+        <button class = "login_button" id = "login_button">LOGIN HERE!</button>
         <div class="switch_temp">
             <p> Don't have an account? <a href="#" onclick = "switchForm('signup_temp')"> Sign up</a></p>
         </div>
@@ -130,7 +54,7 @@
 
         <p class = "switch_form" style = "color: red ; " id = "signup_error"></p>
 
-        <button id = "signup_button"> SIGN UP</button>
+        <button class = "signup_button"id = "signup_button"> SIGN UP</button>
         <div class = "switch_temp">
             <p>Already have an account? <a href = "#" onclick = "switchForm('login_temp')">LOGIN</a></p>
         </div>
@@ -154,7 +78,6 @@
             passwordField2.type = this.checked ? 'text' : 'password';
             console.log("clicked") ; 
         });
-
 
 
     </script>

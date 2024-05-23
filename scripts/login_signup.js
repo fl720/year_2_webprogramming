@@ -14,6 +14,7 @@ function validatePassword(password) {
 }
 
 async function signup() {
+    console.log( "clicked button " ) ; 
     let f_name = document.querySelector("#signup_f_name").value;
     let l_name = document.querySelector("#signup_l_name").value;
     let username = document.querySelector("#signup_username").value;
@@ -54,7 +55,7 @@ async function signup() {
         errorText.textContent = 'Signup failed. Please try again.';
 
     }
-}
+} ; 
 
 
 async function getNamelist( username ) {
@@ -68,6 +69,7 @@ async function getNamelist( username ) {
 };
 
 async function login() {
+    console.log( "clicked button " ) ; 
     // let username = "FL" ; 
     // let password = "Admin12345" ; 
     let username = document.querySelector("#login_username").value;
@@ -126,10 +128,10 @@ async function login() {
 
 
 function init() {
-    const SignupButton = document.querySelector("#signup_button");
+    const SignupButton = document.getElementById('signup_button');
     SignupButton.addEventListener('click', signup);
 
-    const LoginButton = document.querySelector("#login_button");
+    const LoginButton = document.getElementById('login_button');
     LoginButton.addEventListener('click', login);
 
     // const hindloginpass = document.querySelector('#toggle_password') ; 
