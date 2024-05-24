@@ -1,4 +1,4 @@
-import * as mb from '../database.mjs';
+// import * as mb from '../database.mjs';
 
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -133,22 +133,6 @@ function init() {
 
     const LoginButton = document.getElementById('login_button');
     LoginButton.addEventListener('click', login);
-
-    // const hindloginpass = document.querySelector('#toggle_password') ; 
-    // hindloginpass.addEventListener('change', function() {
-    //     const passwordField1 = document.getElementById('login_password');
-    //     passwordField1.type = this.checked ? 'text' : 'password';
-    //     console.log("clicked") ; 
-    // });
-
-    // const hindsignuppass = document.querySelector('#toggle_signup_password')
-    // hindsignuppass.addEventListener('change', function() {
-    //     const passwordField2 = document.getElementById('signup_password');
-    //     passwordField2.type = this.checked ? 'text' : 'password';
-    //     console.log("clicked") ; 
-    // });
-    
-
 }
 
 window.addEventListener('load', init);

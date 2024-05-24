@@ -9,14 +9,14 @@ body {
     padding: 20px;
 }
 .exercise-title {
-    padding-top: 60px ;
+    margin-top: 100px ;
     min-height: 50px;
     font-size: 2em;
-    margin-bottom: 10px;
+    border-bottom: 10px;
 }
 .exercise-statement {
     /* width: 80%; */
-    min-height: 70px;
+    min-height: 80px;
     max-height: 100px;
     max-width: 220px;
     overflow-y: auto;
@@ -103,4 +103,14 @@ background: red;
     margin: 5px;
     padding: 10px;
     font-size: 1em;
+}
+#return {
+    background-color: #6279ea;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    border-bottom: 20px;
 }
