@@ -147,7 +147,7 @@ export async function getHistorys( user_id ) {
             if (err) {
                 reject(err.message);
             } else {
-                results.push(row.name);
+                results.push(row);
             }
         }, (err, numberOfRows) => {
             if (err) {
@@ -159,6 +159,7 @@ export async function getHistorys( user_id ) {
     });
 } ; 
 
+
 export async function getSettings( user_id ) {
     const sql = `SELECT * FROM HIIT_settings where user_id = ? ` ; 
     return new Promise((resolve, reject) => {
@@ -167,7 +168,7 @@ export async function getSettings( user_id ) {
             if (err) {
                 reject(err.message);
             } else {
-                results.push(row.name);
+                results.push(row);
             }
         }, (err, numberOfRows) => {
             if (err) {

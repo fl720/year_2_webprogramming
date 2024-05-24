@@ -10,17 +10,41 @@
 </head>
 
 <body>
-    <section id="homepage">
-        <h2> SETTINGS </h2>
+    <section >
+        <h2 id="setings_title"> SETTINGS </h2>
 
+        <div id="setting_list">
+            <p id ="exercise_setting"> Default Exercise </p>
+            <button id="setting_button"> setting </button>
+        </div>
+
+        <div id="popup" class="popup">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h3 id="popup_title"></h3>
+            <label >Choose a suitable dificulty:</label>
+            <select id="difficulty_select" onchange="changeColour()">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <br><br>
+            <button id="setting_comfirm" onclick="confirmSelection()">Confirm</button>
+        </div>
+    
+        <div id="overlay" class="overlay"></div>
+
+        <button id="return">RETURN TO HOMEPAGE</button>
     </section>
 
     <script>
+
     </script>
 
     <!-- Bootstrap and jQuery Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src = "../scripts/setting.js"></script>
 </body>
 </html>

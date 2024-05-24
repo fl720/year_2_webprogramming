@@ -19,6 +19,8 @@
         <button id = "settings_button">Settings</button>
         <P></P>
         <button id = "history_button">History</button>
+        <P></P>
+        <button id = "logout_button">LOG OUT</button>
 
     </section>
 
@@ -27,6 +29,10 @@
         document.getElementById('create_button').addEventListener('click', () => { window.location = '/creating'; });
         document.getElementById('settings_button').addEventListener('click', () => { window.location = '/settings'; });
         document.getElementById('history_button').addEventListener('click', () => { window.location = '/history'; });
+        
+        document.getElementById('logput_button').addEventListener('click', () => { 
+            window.location = '/'; 
+        });
     </script>
 
     <!-- Bootstrap and jQuery Scripts -->

@@ -42,4 +42,4 @@ function init() {
 
 window.addEventListener('load', init);
 
-// window.addEventListener('load', loadhiitnames);
+window.addEventListener('load', loadhiitnames);

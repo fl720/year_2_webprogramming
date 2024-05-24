@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List with Pop-up</title>
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .popup h3 {
+            margin-top: 0;
+        }
+        .popup .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <ul>
+            <li>Item 1 <button onclick="showPopup('Item 1')">Show Popup</button></li>
+            <li>Item 2 <button onclick="showPopup('Item 2')">Show Popup</button></li>
+            <li>Item 3 <button onclick="showPopup('Item 3')">Show Popup</button></li>
+            <li>Item 4 <button onclick="showPopup('Item 4')">Show Popup</button></li>
+            <li>Item 5 <button onclick="showPopup('Item 5')">Show Popup</button></li>
+        </ul>
+    </div>
+
+    <div id="popup" class="popup">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <h3 id="popup-title"></h3>
+        <label for="color-select">Choose a color:</label>
+        <select id="color-select" onchange="changePopupColor()">
+            <option value="white">Select a color</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="orange">Orange</option>
+        </select>
+        <br><br>
+        <button onclick="confirmSelection()">Confirm</button>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <script>
+        function showPopup(itemName) {
+            document.getElementById('popup-title').innerText = itemName;
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function changePopupColor() {
+            const selectedColor = document.getElementById('color-select').value;
+            document.getElementById('popup').style.backgroundColor = selectedColor;
+        }
+
+        function confirmSelection() {
+            const selectedColor = document.getElementById('color-select').value;
+            alert(`You have selected: ${selectedColor}`);
+            closePopup();
+        }
+    </script>
+
+</body>
+</html>
