@@ -40,14 +40,14 @@ sta.then(ispassword => {
 Another example of using AI to improve the working progress is to use it for the correct formatting without spending too much time using console.log() to figure out the correct output. This saves the development team(myself) what used to be taking hours just to check the correct method for the correct format and debugging.
 
 ``` js
-            const currentDateTime = new Date();
-            const year = currentDateTime.getFullYear();
-            const month = String(currentDateTime.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(currentDateTime.getDate()).padStart(2, '0');
-            const hours = String(currentDateTime.getHours()).padStart(2, '0');
-            const minutes = String(currentDateTime.getMinutes()).padStart(2, '0');
-            const seconds = String(currentDateTime.getSeconds()).padStart(2, '0');
-            const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+const currentDateTime = new Date();
+const year = currentDateTime.getFullYear();
+const month = String(currentDateTime.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+const day = String(currentDateTime.getDate()).padStart(2, '0');
+const hours = String(currentDateTime.getHours()).padStart(2, '0');
+const minutes = String(currentDateTime.getMinutes()).padStart(2, '0');
+const seconds = String(currentDateTime.getSeconds()).padStart(2, '0');
+const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 ```
 
 AI has also been used in simplifying the webpage elements. One of the most complicated webpages is the hiit.html for the HIIT exercise. It has a title, a long description, a timer, and three inputs with 4 buttons. Unlike the login page which has so many templates and has been practiced many times for the development team(myself). By giving rough structures (a title, a long description, a timer, and three inputs with 4 buttons), the AI can help me label each element with a unique ID. This simplified my workflow and the time to think of ten or even twenty different ID names. Then I can start to code functions for each button and make the timer work smoothly. 
