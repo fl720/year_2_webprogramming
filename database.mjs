@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 
 // connect to database
-const db = new sqlite3.Database('./database.sqlite', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('./database.sqlite', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
         console.error(err.message);
     }
@@ -86,7 +86,114 @@ export function listUsers() {
             }
         });
     });
-}
+} ; 
+
+
+export async function getPassword(user) {
+    const sql = 'SELECT password FROM users WHERE username = ?';
+    return new Promise((resolve, reject) => {
+        db.get(sql, [user], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row) {
+                resolve(row.password);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+} ; 
+
+export async function getAllActivitiesNames( user_id ) {
+    const sql = `SELECT name FROM HIIT_activities where user_id = ? ` ; 
+    return new Promise((resolve, reject) => {
+        const results = [];
+        db.each(sql, [user_id], (err, row) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                results.push(row.name);
+            }
+        }, (err, numberOfRows) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+} ; 
+
+export async function getActivity( name , user_id ) {
+    const sql = `SELECT * FROM HIIT_activities WHERE name = ? AND user_id = ?` ; 
+    return new Promise((resolve, reject) => {
+        db.get(sql, [name , user_id], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row) {
+                resolve(row);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+} ;
+
+export async function getHistorys( user_id ) {
+    const sql = `SELECT * FROM History where user_id = ? ` ; 
+    return new Promise((resolve, reject) => {
+        const results = [];
+        db.each(sql, [user_id], (err, row) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                results.push(row.name);
+            }
+        }, (err, numberOfRows) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+} ; 
+
+export async function getSettings( user_id ) {
+    const sql = `SELECT * FROM HIIT_settings where user_id = ? ` ; 
+    return new Promise((resolve, reject) => {
+        const results = [];
+        db.each(sql, [user_id], (err, row) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                results.push(row.name);
+            }
+        }, (err, numberOfRows) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+} ; 
+
+export async function getActivityNameFromId( activity_id ) {
+    const sql = `SELECT name FROM HIIT_activities WHERE activity_id = ?` ; 
+    return new Promise((resolve, reject) => {
+        db.get(sql, [activity_id], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row) {
+                resolve(row);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+} ;
+
 
 export function updateUsertoDB(userDetails) {
     const { f_name , l_name, username, password, email } = userDetails;
@@ -189,7 +296,7 @@ export function deleteUser( userDetail ) {
     const { username } = userDetail ; 
 
     const sql = 'DELETE FROM users WHERE username = ? ' ; 
-    db.run( sql, [user_id] , (err)=> {
+    db.run( sql, [username] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
@@ -228,52 +335,6 @@ function closeDB()
 }
 
 
-export async function getPassword(user) {
-    const sql = 'SELECT password FROM users WHERE username = ?';
-    return new Promise((resolve, reject) => {
-        db.get(sql, [user], (err, row) => {
-            if (err) {
-                reject(err);
-            } else if (row) {
-                resolve(row.password);
-            } else {
-                resolve(false);
-            }
-        });
-    });
-}
-
-// export async function validateCorrectPassword(){
-//     try {
-//         const passwordFromDB = await getPassword(testpasswordtrue);
-//         if (passwordFromDB) {
-//             const isMatch = testpasswordtrue.password === passwordFromDB;
-//             return isMatch ; 
-//             // console.log('Password match:', isMatch);
-//         } else {
-//             console.log('User not found');
-//         }
-//     } catch (err) {
-//         console.error('Error fetching password:', err);
-//     }
-// };
-
-
-// let passwordVariable;
-// let res = getPassword(username )
-// res.then(password => {
-//         if (password) {
-//             passwordVariable = password; 
-//             console.log('Password:', passwordVariable);
-//         } else {
-//             console.log('User not found or no password set');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error fetching password:', error);
-//     });
-
-
 // ============================== test ==============================
 const testuser = {
     f_name : 'Keny' , 
@@ -303,3 +364,18 @@ const newdescript = {activity_id : 1  , description : "On the ground, set your h
 // console.log(getPassword( testpasswordtrue )) ; 
 // console.log(getPassword( testpasswordfalse )); 
 // console.log(getPassword( testpassworduserfalse )); 
+
+
+// let passwordVariable;
+// let sta = getActivityNameFromId(1) ; 
+// sta.then(ispassword => {
+//         if (ispassword) {
+//             passwordVariable = ispassword; 
+//             console.log( ispassword.name ) ; 
+//         } else {
+//             console.log('no password set');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error fetching password:', error);
+//     });

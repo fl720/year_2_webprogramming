@@ -1,9 +1,20 @@
 // import * as mb from '../database.mjs';
 
+async function getNamelist( username ) {
+    try {
+        const dbUserDetails = await mb.listUsers();
+        // console.log( dbUserDetails.includes(username) ); 
+        return dbUserDetails.includes(username) ; 
+    } catch (err) {
+        console.error('Error fetching: ', err);
+    }
+};
+
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
+} ; 
+
 function validatePassword(password) {
     const isLengthValid = password.length >= 8;
     const hasUppercase = /[A-Z]/.test(password);
@@ -11,7 +22,7 @@ function validatePassword(password) {
     const hasDigit = /\d/.test(password);
     const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
     return isLengthValid && hasUppercase && hasLowercase && hasDigit && hasSpecialCharacter;
-}
+} ; 
 
 async function signup() {
     console.log( "clicked button " ) ; 
@@ -31,8 +42,10 @@ async function signup() {
     } else if (validatePassword(password) === false) {
         errorText.textContent = 'Please fill in a valid password';
         return 0 ; 
+    } else if ( getNamelist( username ) === true ) {
+        errorText.textContent = 'Username already exsisted!';
+        return  0 ; 
     }
-
     const UserDetails ={
         f_name: f_name , 
         l_name: l_name ,
@@ -40,33 +53,14 @@ async function signup() {
         password: password ,
         email: email
     };
-
-    
     try {
-
         await mb.updateUsertoDB(UserDetails);
-
         errorText.textContent = 'Signup successful!';
-
     } catch (error) {
-
         console.error('Error updating user to DB:', error);
-
         errorText.textContent = 'Signup failed. Please try again.';
-
     }
 } ; 
-
-
-async function getNamelist( username ) {
-    try {
-        const dbUserDetails = await mb.listUsers();
-        // console.log( dbUserDetails.includes(username) ); 
-        return dbUserDetails.includes(username) ; 
-    } catch (err) {
-        console.error('Error fetching: ', err);
-    }
-};
 
 async function login() {
     console.log( "clicked button " ) ; 
@@ -87,7 +81,6 @@ async function login() {
     res.then(isusername => {
             if (isusername) {
                 validationOfUsername = isusername; 
-
                 if( validationOfUsername == true ){
                     // ---------------- CHECKING PASSWORD ----------------------
                     let passwordVariable;
@@ -95,7 +88,6 @@ async function login() {
                     sta.then(ispassword => {
                             if (ispassword) {
                                 passwordVariable = ispassword; 
-
                                 // ----------- if password match ---------------
                                 if ( passwordVariable == password ){
                                     // localStorage.setItem('isLoggedIn', 'true');
@@ -104,7 +96,6 @@ async function login() {
                                 } else { 
                                     errorText.textContent = 'Invalid username or password.';
                                 }
-
                             } else {
                                 console.log('no password set');
                             }
@@ -112,8 +103,6 @@ async function login() {
                         .catch(error => {
                             console.error('Error fetching password:', error);
                         });
-            
-            
                 } else {
                     errorText.textContent = 'Invalid username or password.';
                 }

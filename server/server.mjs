@@ -30,12 +30,20 @@ app.get("/hiit" , (req , res ) => {
   res.sendFile(path.join(__dirname , ".." , "page" , "hiit.html" )) ; 
 })
 
-app.get("/setting" , (req , res ) => {
-  res.sendFile(path.join(__dirname , ".." , "page" , "setting.html" )) ; 
+app.get("/settings" , (req , res ) => {
+  res.sendFile(path.join(__dirname , ".." , "page" , "settings.html" )) ; 
 })
 
 app.get("/history" , (req , res ) => {
   res.sendFile(path.join(__dirname , ".." , "page" , "history.html" )) ; 
+})
+
+app.get("/hiitList" , (req , res ) => {
+  res.sendFile(path.join(__dirname , ".." , "page" , "hiitlist.html" )) ; 
+})
+
+app.get("/creating" , (req , res ) => {
+  res.sendFile(path.join(__dirname , ".." , "page" , "creating.html" )) ; 
 })
 
 const port = 3000;

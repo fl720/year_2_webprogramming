@@ -4,47 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
     <title>HIIT Homepage</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: rgb(178, 214, 255);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            
-        }
-        button {
-            background-color: #6279ea;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #5061c7;
-        }
-    </style>
 </head>
 
 <body>
     <section id="homepage">
         <h2> Your HIIT </h2>
         
-        <button id = "container">HIIT Workout</button>
+        <button id = "hiitList">HIIT Workout</button>
         <P></P>
-        <button id = "container">Create Your Own HIIT</button>
+        <button id = "create_button">Create Your Own HIIT</button>
         <P></P>
-        <button id = "container">Settings</button>
+        <button id = "settings_button">Settings</button>
         <P></P>
-        <button id = "container">History</button>
+        <button id = "history_button">History</button>
 
     </section>
+
+    <script>
+        document.getElementById('hiitList').addEventListener('click', () => { window.location = '/hiitList'; });
+        document.getElementById('create_button').addEventListener('click', () => { window.location = '/creating'; });
+        document.getElementById('settings_button').addEventListener('click', () => { window.location = '/settings'; });
+        document.getElementById('history_button').addEventListener('click', () => { window.location = '/history'; });
+    </script>
 
     <!-- Bootstrap and jQuery Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
