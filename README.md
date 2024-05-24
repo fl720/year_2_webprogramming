@@ -1,4 +1,4 @@
-# UP2154598 A High-Intensity Interval Training Tool(HIIT) COURSEWORK
+# UP2154598  - A High-Intensity Interval Training Tool(HIIT) COURSEWORK
 
 ## Description
 In this coursework, A HIIT App has been made. HIIT workouts are composed of multiple periods of intense work, separated by periods of lighter alternative work, or rest.
