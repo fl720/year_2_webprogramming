@@ -17,6 +17,26 @@ All activities will be saved once you click on it. It will save the user and the
 
 This App uses express.js and SQLite for its database. 
 
+## How to run
+Clone the repository:
+
+1, Unzip the file.
+
+2, Navigate to the project folder.
+
+3, Install the npm dependencies in the terminal:
+```
+npm install
+```
+4, Start the application in the terminal:
+```
+npm start
+```
+5, Open you browser and go to:
+```
+http://localhost:3000
+```
+
 ## Use of the AI 
 Although this project was designed and written by the developer(myself), there are also uses of AI to help for the benefits of efficiency and debugging. Also in the field that the developer is not familiar with, for instance, the async functions for getting the data from the database without pending. 
 
@@ -51,6 +71,12 @@ const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds
 ```
 
 AI has also been used in simplifying the webpage elements. One of the most complicated webpages is the hiit.html for the HIIT exercise. It has a title, a long description, a timer, and three inputs with 4 buttons. Unlike the login page which has so many templates and has been practiced many times for the development team(myself). By giving rough structures (a title, a long description, a timer, and three inputs with 4 buttons), the AI can help me label each element with a unique ID. This simplified my workflow and the time to think of ten or even twenty different ID names. Then I can start to code functions for each button and make the timer work smoothly. 
+
+
+## Critical Evaluation and Implementations 
+During the development process, every function has been carefully tested once in the local file to prove these functions are not wrong or to some extent that they are functional. For instance, the database.mjs file has more than 200 lines, and most of the functions have been tested with the database. By checking the databse.sqlite, it proves those functions are functional. The same process has been applied to all the HTML files the CSS files and the JS files that are attached with them. They all worked independently, and locally.
+
+However, things never go as planned. One of the mysteries that remains is to import different functions from the database.mjs stops the entire js files from working. The importation has to be commended for the App to be run, yet without the ability to connect to the database. Due to this fact, login systems, and functions related to reading the database are all impossible. Due to the time limitation, this issue was set aside to save time for other unfinished part of this app. 
 
 
 
