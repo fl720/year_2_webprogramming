@@ -15,7 +15,6 @@ body {
     border-bottom: 10px;
 }
 .exercise-statement {
-    /* width: 80%; */
     min-height: 80px;
     max-height: 100px;
     max-width: 220px;
@@ -24,7 +23,6 @@ body {
     padding: 10px;
     border: 1px solid #333;
     box-sizing: border-box;
-    /* position: fixed; */
 }
 .clock-container {
     width: 220px;
@@ -33,10 +31,8 @@ body {
     max-height: 220px;
     aspect-ratio: 1;
     display: flex;
-    /* display: inline-block; */
     justify-content: center;
     align-items: center;
-    /* position:static; */
 }
 .clock {
     /* width: 100%; */

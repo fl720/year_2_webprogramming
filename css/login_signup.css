@@ -61,7 +61,6 @@ button:hover {
 .toggle_password {
     transform: scale(2);
     align-items: right;
-    /* margin-right: 15px; */
 }
 
 .toggle_signup_password{

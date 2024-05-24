@@ -46,4 +46,5 @@ function init() {
     })
 }
 
-// window.addEventListener('load', init);
+window.addEventListener('load', showPopup) ; 
+window.addEventListener('load', init);

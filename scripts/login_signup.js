@@ -3,7 +3,6 @@
 async function getNamelist( username ) {
     try {
         const dbUserDetails = await mb.listUsers();
-        // console.log( dbUserDetails.includes(username) ); 
         return dbUserDetails.includes(username) ; 
     } catch (err) {
         console.error('Error fetching: ', err);
@@ -64,8 +63,6 @@ async function signup() {
 
 async function login() {
     console.log( "clicked button " ) ; 
-    // let username = "FL" ; 
-    // let password = "Admin12345" ; 
     let username = document.querySelector("#login_username").value;
     let password = document.querySelector("#login_password").value;
     let errorText = document.querySelector("#login_error");

@@ -8,7 +8,6 @@ const __dirname = path.dirname(__filename);
 path.resolve(__dirname, __filename)
 const app = express();
 
-// console.log(mb.listUsers() ); 
 
 // Serve static files from the 'client' folder
 app.use( express.static(path.join(__dirname, "..")) );
@@ -19,6 +18,10 @@ app.use(express.static("public")) ;
 
 // SERVER GET REQUESTS
 app.get("/" , (req , res ) => {
+  res.sendFile(path.join(__dirname , ".." , "page" , "index.html" )) ; 
+})
+
+app.get("/index" , (req , res ) => {
   res.sendFile(path.join(__dirname , ".." , "page" , "index.html" )) ; 
 })
 
@@ -46,11 +49,11 @@ app.get("/creating" , (req , res ) => {
   res.sendFile(path.join(__dirname , ".." , "page" , "creating.html" )) ; 
 })
 
-const port = 3000;
+const port = 8080;
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
 
 
 
-app.listen(4000);
+// app.listen(8080);

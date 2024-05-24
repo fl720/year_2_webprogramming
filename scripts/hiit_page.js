@@ -47,7 +47,6 @@ function startTimer() {
             }
         } else {
             clearInterval(timer);
-            // playBeep(493.8);
             clockText.textContent = "Time's up!";
             secondHand.style.transform = `rotate(-90deg) translateX(-50%)`;
         }
@@ -64,7 +63,6 @@ function startTheTimer() {
 
     const initialAngle = ((totalTime % 60) / 60) * 360 - 90;
     secondHand.style.transform = `rotate(${initialAngle}deg) translateX(-50%)`;
-    // secondHand.style.background = 'red' ; 
     secondHand.classList.add('red');
     updateClockText();
     updateSecondHand();
