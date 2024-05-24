@@ -4,13 +4,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    /* align-items: center; */
     justify-content: left;
-    /* height: 100vh; */
-}
-
-.h2 {
-    text-align: right;
 }
 
 section {
@@ -77,4 +71,4 @@ button:hover {
 .switch_form{
     margin-top: 10px  ;
     margin-bottom: 20px  ;
-}
+} 

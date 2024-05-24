@@ -3,105 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/hiit_page.css">
     <title>HIIT</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: rgb(178, 214, 255);
-            padding: 20px;
-        }
-        .exercise-title {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .exercise-statement {
-            width: 80%;
-            max-height: 100px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #333;
-            box-sizing: border-box;
-        }
-        .clock-container {
-            width: 100%;
-            max-width: 220px;
-            aspect-ratio: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .clock {
-            width: 100%;
-            height: 100%;
-            border: 10px solid #333;
-            border-radius: 50%;
-            position: relative;
-            background-color: #fff;
-            margin-bottom: 20px;
-        }
-        .hand {
-            width: 100%;
-            height: 2px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform-origin: 0 0;
-            transform: rotate(0deg) translateX(-50%);
-        }
-        .hand::before {
-            content: '';
-            position: absolute;
-            width: 90%;
-            height: 100%;
-            background: transparent;
-            border-radius: 1px;
-            left: 0;
-        }
-        .hand::after {
-            content: '';
-            position: absolute;
-            width: 10%;
-            height: 100%;
-            background: red;
-            border-radius: 1px;
-            right: 0;
-        }
-        .clock-text {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-size: 2em;
-            top: 50%;
-            transform: translateY(-50%);
-            font-family: Arial, sans-serif;
-        }
-        .controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .controls input {
-            margin: 5px;
-            padding: 5px;
-            font-size: 1em;
-        }
-        .controls button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 1em;
-        }
+
     </style>
 </head>
 <body>
     <div class="exercise-title">Push Up</div>
-    <div class="exercise-statement" id="exercise-statement">Here you can put long sentences or multiple lines of text. If the content is too long, a scrollbar will appear.</div>
+    <div class="exercise-statement" id="exercise-statement">On the ground, set your hands at a distance that is slightly wider than shoulder-width apart. Draw a straight line from your chest down to the floor</div>
     <div class="clock-container">
         <div class="clock" id="clock">
             <div class="hand" id="second-hand"></div>
@@ -118,12 +28,12 @@
     </div>
 
     <script>
-        const clockText = document.getElementById('clock-text');
-        const secondHand = document.getElementById('second-hand');
-        const startButton = document.getElementById('start');
-        const pauseButton = document.getElementById('pause');
-        const resetButton = document.getElementById('reset');
-        const hoursInput = document.getElementById('hours');
+        const clockText    = document.getElementById('clock-text');
+        const secondHand   = document.getElementById('second-hand');
+        const startButton  = document.getElementById('start');
+        const pauseButton  = document.getElementById('pause');
+        const resetButton  = document.getElementById('reset');
+        const hoursInput   = document.getElementById('hours');
         const minutesInput = document.getElementById('minutes');
         const secondsInput = document.getElementById('seconds');
 
@@ -187,7 +97,8 @@
 
             const initialAngle = ((totalTime % 60) / 60) * 360 - 90;
             secondHand.style.transform = `rotate(${initialAngle}deg) translateX(-50%)`;
-
+            // secondHand.style.background = 'red' ; 
+            secondHand.classList.add('red');
             updateClockText();
             updateSecondHand();
             startTimer();
