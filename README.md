@@ -1,6 +1,6 @@
-# UP2154598  - A High-Intensity Interval Training Tool(HIIT) COURSEWORK
+# HIIT up2154598 
 
-## Description
+## Key features
 In this coursework, A HIIT App has been made. HIIT workouts are composed of multiple periods of intense work, separated by periods of lighter alternative work, or rest.
 
 The user can decide to use the app with an account for management and long-term exercise planning. The user can also use the app without login details just simply go through anonymous mode at the bottom. 
@@ -37,7 +37,7 @@ npm start
 http://localhost:3000
 ```
 
-## Use of the AI 
+## AI
 Although this project was designed and written by the developer(myself), there are also uses of AI to help for the benefits of efficiency and debugging. Also in the field that the developer is not familiar with, for instance, the async functions for getting the data from the database without pending. 
 
 In the database.mjs, getting data without pending has always concerned the development team for a while. Although a useful method has been learned, the code still looks too long which is inconvenient for future maintenance. After using the AI, a shorter and more readable method has been used to improve the readiness of the code and is quickly being used in all the scenarios where the function needs to read and obtain the data from the database. 
