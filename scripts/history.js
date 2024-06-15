@@ -1,10 +1,43 @@
 // import * as mb from '../database.mjs';
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
 
 function load_history() {
     const displayBoard = document.getElementById('history_list') ; 
     let his_list ;
 
+    const user_id = getCookie( "user_id" );
+
+    let fetch_instance = fetch("/get_history", {
+        method: "POST",
+        headers: {
+            "Content-type":"application/json"
+        },
+        body: JSON.stringify(
+            {
+                user_id: user_id
+            }
+        )
+    });
+    fetch_instance.then(response => response.text()).then(
+        data=>{
+            console.log(data);
+        }
+    )
+
+    return 0;
+
     let sta = mb.getHistorys( user_id ) ; 
+    
     sta.then(isOccur => {
             if (isOccur) {
                 his_list = isOccur; 

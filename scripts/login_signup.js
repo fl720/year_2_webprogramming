@@ -1,13 +1,28 @@
-// import * as mb from '../database.mjs';
 
-async function getNamelist( username ) {
-    try {
-        const dbUserDetails = await mb.listUsers();
-        return dbUserDetails.includes(username) ; 
-    } catch (err) {
-        console.error('Error fetching: ', err);
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
     }
-};
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function stringToHash(string) {
+
+    let hash = 0;
+
+    if (string.length == 0) return hash;
+
+    for (i = 0; i < string.length; i++) {
+        char = string.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+
+    return hash;
+}
 
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,24 +56,46 @@ async function signup() {
     } else if (validatePassword(password) === false) {
         errorText.textContent = 'Please fill in a valid password';
         return 0 ; 
-    } else if ( getNamelist( username ) === true ) {
-        errorText.textContent = 'Username already exsisted!';
-        return  0 ; 
-    }
-    const UserDetails ={
-        f_name: f_name , 
-        l_name: l_name ,
-        username: username ,
-        password: password ,
-        email: email
-    };
-    try {
-        await mb.updateUsertoDB(UserDetails);
-        errorText.textContent = 'Signup successful!';
-    } catch (error) {
-        console.error('Error updating user to DB:', error);
-        errorText.textContent = 'Signup failed. Please try again.';
-    }
+    } 
+    
+    password = stringToHash( password ) ; 
+    
+    let fetch_instance = fetch("/signup" , {
+        method: "POST" , 
+        headers :{
+            "Content-type":"application/json"
+        },
+        body: JSON.stringify(
+            {
+                f_name: f_name , 
+                l_name: l_name ,
+                username: username ,
+                password: password ,
+                email: email
+            }
+        )
+    }) ; 
+
+    fetch_instance.then(response => response.text()).then(
+        data=>{
+            data = JSON.parse(data)
+            if (data["usernameExist"] == true ){
+                errorText.textContent = 'username existed, please use another username'
+            } else {
+                if( data["user_id"] == -1 ){
+                    errorText.textContent = 'Error in server, please re-signup.'
+                }
+                else{
+                    setCookie( 'user_id' , data["user_id"] , 1 ) ; 
+                    setCookie( 'username' , username , 1 ) ; 
+                    window.location = '/homepage';
+                }
+            }
+        }
+    )
+
+    return 0;
+
 } ; 
 
 async function login() {
@@ -70,46 +107,45 @@ async function login() {
     if (username === "" || password === "") {
         errorText.textContent = 'Please fill in all fields';
         return 0 ; 
-    } 
+    } else { 
+        errorText.textContent = '';
+    }
+
+    password = stringToHash( password ) ; 
     
-    // ---------------- FIND THE USERNAME IN THE DB OR NOT ---------------------
-    let validationOfUsername;
-    let res = getNamelist(username ) ; 
-    res.then(isusername => {
-            if (isusername) {
-                validationOfUsername = isusername; 
-                if( validationOfUsername == true ){
-                    // ---------------- CHECKING PASSWORD ----------------------
-                    let passwordVariable;
-                    let sta = mb.getPassword(username) ; 
-                    sta.then(ispassword => {
-                            if (ispassword) {
-                                passwordVariable = ispassword; 
-                                // ----------- if password match ---------------
-                                if ( passwordVariable == password ){
-                                    // localStorage.setItem('isLoggedIn', 'true');
-                                    console.log("loginning") ; 
-                                    window.location = '/homepage';
-                                } else { 
-                                    errorText.textContent = 'Invalid username or password.';
-                                }
-                            } else {
-                                console.log('no password set');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching password:', error);
-                        });
-                } else {
-                    errorText.textContent = 'Invalid username or password.';
-                }
-            } else {
-                errorText.textContent = 'Invalid username or password.';
+    let fetch_instance = fetch("/get_login" , {
+        method: "POST" , 
+        headers :{
+            "Content-type":"application/json"
+        },
+        body: JSON.stringify(
+            {
+                username: username ,  
+                password: password
             }
-        })
-        .catch(error => {
-            errorText.textContent = 'Invalid username or password.';
-        });
+        )
+    }) ; 
+    fetch_instance.then(response => response.text()).then(
+        data=>{
+            data = JSON.parse(data)
+            
+            console.log( data ) ; 
+            if (data["usernameExist"] == false ){
+                errorText.textContent = 'Incorrect username or password.'
+            } else {
+                if( data["password"] == false ){
+                    errorText.textContent = 'Incorrect username or password.'
+                }
+                else{
+                    setCookie( 'user_id' , data["user_id"] , 1 ) ; 
+                    setCookie( 'username' , username , 1 ) ; 
+                    window.location = '/homepage';
+                }
+            }
+        }
+    )
+
+    return 0;
 } ; 
 
 

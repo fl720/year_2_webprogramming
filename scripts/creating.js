@@ -1,6 +1,16 @@
-// import * as mb from '../database.mjs';
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
 
 function creatingActivity(){
+    let user_id      = getCookie("user_id") ; 
     let activityName = document.querySelector('#activity_name').value ; 
     let desc         = document.querySelector('#description').value   ; 
     let shareable    = document.querySelector('#share_status').value  ; 
@@ -13,13 +23,33 @@ function creatingActivity(){
         errorText.textContent = '' ; 
     }
 
-    const activityDetails = {
-        user_id: user_id , 
-        name: activityName ,
-        description: desc , 
-        shared: shareable 
-    } ; 
-    mb.updateActivity( activityDetails ) ; 
+    let fetch_instance = fetch("/create_hiit" , {
+        method: "POST" , 
+        headers :{
+            "Content-type":"application/json"
+        },
+        body: JSON.stringify(
+            {
+                user_id: user_id , 
+                name: activityName ,
+                description: desc , 
+                shared: shareable 
+            }
+        )
+    }) ; 
+
+    fetch_instance.then(response => response.text()).then(
+        data=>{
+            data = JSON.parse(data)
+            if (data["update"] == true ){
+                errorText.textContent = 'Update successed!'
+            } else {
+                errorText.textContent = 'Update failed, please try again.'
+            }
+        }
+    )
+
+    return 0;
 }
 
 function init() {
@@ -30,7 +60,6 @@ function init() {
 
     returnButton.addEventListener('click' , () => {
         window.location = '/homepage';
-        console.log( " clicked" ) ; 
     })
 }
 
