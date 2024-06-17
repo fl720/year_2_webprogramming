@@ -85,9 +85,18 @@ app.post("/signup" , async (req , res ) => {
   }
 })
 
-app.post("/get_history", (req , res ) => {
+app.post("/get_history", async (req , res ) => {
   const user_id = req.body.user_id;
-  res.send(`Hello ${user_id}`); 
+  
+  const DBdata = await mb.getHistorysInArray( user_id ) ; 
+  // console.log( DBdata ) ; 
+  res.send( JSON.stringify(DBdata) ) ; 
+})
+
+app.post("/delete_history" , async (req , res ) => { 
+  const his_id = req.body.his_id ; 
+  const deleteHistoryStatus = await mb.deleteHistory( his_id ) ;  
+  res.send( deleteHistoryStatus ) ; 
 })
 
 app.post("/get_login" , async (req , res ) => {

@@ -133,13 +133,14 @@ async function login() {
             if (data["usernameExist"] == false ){
                 errorText.textContent = 'Incorrect username or password.'
             } else {
-                if( data["password"] == false ){
-                    errorText.textContent = 'Incorrect username or password.'
-                }
-                else{
+                if( data["passwordCorrectness"] == true ){
+                    
                     setCookie( 'user_id' , data["user_id"] , 1 ) ; 
                     setCookie( 'username' , username , 1 ) ; 
                     window.location = '/homepage';
+                }
+                else{
+                    errorText.textContent = 'Incorrect username or password.'
                 }
             }
         }

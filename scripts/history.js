@@ -12,10 +12,7 @@ function getCookie(name) {
 
 
 function load_history() {
-    const displayBoard = document.getElementById('history_list') ; 
-    let his_list ;
-
-    const user_id = getCookie( "user_id" );
+    const user_id = getCookie( 'user_id' );
 
     let fetch_instance = fetch("/get_history", {
         method: "POST",
@@ -30,57 +27,63 @@ function load_history() {
     });
     fetch_instance.then(response => response.text()).then(
         data=>{
-            console.log(data);
+            const dataObject = JSON.parse(data);
+
+            if( dataObject.historyIds.length == 0 ){
+                console.log('no history records');
+                return 0 ; 
+            }
+            const { historyIds, activityTitles, dates } = dataObject;
+            
+            const displayBoard = document.getElementById('history_list') ; 
+            displayBoard.innerHTML = '';
+            historyIds.forEach((history_id, index) => {
+                const tag = document.createElement('div');
+                tag.className = 'activity_item';
+                
+                const description = document.createElement('div');
+                description.className = 'activity_description';
+                description.textContent = `${activityTitles[index]['name'] } at ${dates[index]}`;
+                
+                const button = document.createElement('button');
+                button.className = 'delete_button';
+                button.textContent = 'DELETE';
+                button.addEventListener('click', () => {
+                console.log(`Deleting activity with ID: ${history_id}`);
+                let fetch_ins = fetch("/delete_history" , {
+                    method: "POST" , 
+                    headers :{
+                        "Content-type":"application/json"
+                    },
+                    body: JSON.stringify(
+                        {
+                            his_id: history_id 
+                        }
+                    )
+                }) ;
+                fetch_ins.then(response => response.text()).then(
+                    data=>{
+                        data = JSON.parse(data)
+                        
+                        console.log( data ) ; 
+                        if(data == true ) {
+                            description.remove();
+                            button.remove() ; 
+                        } else {
+                            console.log( 'Error occur in server, please check with server.')
+                        }
+                        
+                    }) ; 
+                });
+    
+                tag.appendChild(description);
+                tag.appendChild(button);
+                displayBoard.appendChild(tag);
+            });
+            return ; 
         }
     )
-
     return 0;
-
-    let sta = mb.getHistorys( user_id ) ; 
-    
-    sta.then(isOccur => {
-            if (isOccur) {
-                his_list = isOccur; 
-            } else {
-                console.log('no history records');
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching history list:', error);
-        });
-
-    his_list.forEach((his_list) => {
-        const button = document.createElement('button') ;
-        const tag    = document.createElement('p') ; 
-
-        let activity_title ;
-        let tag_title = mb.getActivityNameFromId( his_list.activity_id ) ; 
-        tag_title.then(isOccur => {
-                if (isOccur) {
-                    activity_title = isOccur; 
-                } else {
-                    console.log('no activity records');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching activity id:', error);
-            });
-
-        tag.textContent = `${activity_title} , time: ${his_list.dates} `;
-        tag.id = "history_tag" ; 
-        button.textContent = "DELETE"
-        button.id = "delete_button" ; 
-        button.addEventListener('click', () => {
-            console.log( "deleted" ) ; 
-
-            tag.remove();
-            button.remove() ; 
-            mb.deleteHistory( his_list.history_id ) ; 
-        });
-        
-        displayBoard.appendChild( tag ) ; 
-        displayBoard.appendChild(button);
-    });
 } ; 
 
 

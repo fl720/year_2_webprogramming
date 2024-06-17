@@ -221,16 +221,37 @@ export async function getHistorys( user_id ) {
             } else {
                 results.push(row);
             }
-        }, (err, numberOfRows) => {
+        }, (err) => {
             if (err) {
                 reject(err.message);
             } else {
                 resolve(results);
             }
         });
+        return results ; 
     });
 } ; 
 
+export async function getHistorysInArray( user_id ) {
+    const DBdata = await getHistorys( Number(user_id) ) ; 
+        
+    const historyIds = [];
+    const activityIds = [];
+    const dates = [];
+    DBdata.forEach (item => {
+        historyIds.push(item.history_id);
+        activityIds.push( item.activity_id);
+        dates.push(item.dates);
+    });
+
+    const activityTitles = await Promise.all(activityIds.map(id => getActivityNameFromId(id)));
+    const dataObject = {
+        historyIds: historyIds,
+        activityTitles: activityTitles,
+        dates: dates
+    };
+    return dataObject ; 
+}
 
 export async function getSettings( user_id ) {
     const sql = `SELECT * FROM HIIT_settings where user_id = ? ` ; 
@@ -401,12 +422,17 @@ export function deleteActivity( id ) {
     } ) ; 
 }
 
-export function deleteHistory( id ) { 
-    const { history_id } = id ; 
-
-    const sql = 'DELETE FROM HIIT_activities WHERE history_id = ? ' ; 
+export async function deleteHistory( history_id ) {  
+    const sql = 'DELETE FROM History WHERE history_id = ? ' ; 
+    return new Promise((resolve, reject) => {
     db.run( sql, [history_id] , (err)=> {
-        if (err) return console.error(err.message) ;
+        if (err) {
+            console.error(err.message) ;  
+            reject(err);
+        } else  {
+            resolve(true);
+        }
+    }) ; 
     } ) ; 
 }
 
@@ -420,7 +446,4 @@ function closeDB()
         console.log('Close database connection');
     }); 
 }
-
-
-// console.log( isName(  ) ); 
 
