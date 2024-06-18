@@ -105,6 +105,39 @@ function resetTheTimer() {
     isPaused = false;
 } ; 
 
+function textfresher() { 
+    const title = document.querySelector(".exercise-title") ; 
+    const statement = document.getElementById("exercise-statement") ; 
+
+    const user_id = getCookie("user_id") ; 
+    const activity_name = getCookie("activity_name") ; 
+
+    let fetch_instance = fetch("/activity_description" , {
+        method: "POST" , 
+        headers :{
+            "Content-type":"application/json"
+        },
+        body: JSON.stringify(
+            {
+                user_id: user_id , 
+                activity_name: activity_name 
+            }
+        )
+    }) ; 
+
+    fetch_instance.then(response => response.text()).then(
+        data=>{
+            data = JSON.parse(data)
+            console.log( data ) ; 
+            console.log( activity_name) ; 
+
+            title.textContent = activity_name ; 
+            statement.textContent = data["description"] ; 
+        }
+    )
+
+}
+
 
 function init() {
     const startButton  = document.getElementById('start');
@@ -121,6 +154,8 @@ function init() {
     returnButton.addEventListener('click' , () => {
         window.location = '/homepage';
     })
+
+    textfresher(); 
 }
 
 window.addEventListener('load', init);

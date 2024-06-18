@@ -185,6 +185,16 @@ app.post("/update_his" , async( req , res ) => {
   res.send(  JSON.stringify( { update : sta , activity_id : id } ) ) ; 
 })
 
+app.post("/activity_description" , async( req , res ) => {
+  const user_id = req.body.user_id ; 
+  const activity_name =  req.body.activity_name ;
+
+  const activity = await mb.getActivity(activity_name , user_id ) ; 
+  
+  // console.log( activity ) ; 
+  res.send( JSON.stringify( { description : activity.description } ) ) ; 
+})
+
 const port = 8080;
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

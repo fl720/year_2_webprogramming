@@ -80,7 +80,7 @@ function loadhiitnames() {
                             data = JSON.parse(data)
                             console.log( data )  
                             if( data["update"] == true ){
-                                setCookie( "activity_id" , data["activity_id"] , 1 ) ; 
+                                setCookie( "activity_name" , activity_name , 1 ) ; 
                                 window.location = '/hiit';
                             } else { 
                                 console.log( "Error occur, please check with server.")
