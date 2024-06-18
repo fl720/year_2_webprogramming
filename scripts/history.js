@@ -1,4 +1,4 @@
-// import * as mb from '../database.mjs';
+
 function getCookie(name) {
     const nameEQ = name + "=";
     const ca = document.cookie.split(';');
@@ -65,7 +65,6 @@ function load_history() {
                     data=>{
                         data = JSON.parse(data)
                         
-                        console.log( data ) ; 
                         if(data == true ) {
                             description.remove();
                             button.remove() ; 

@@ -37,7 +37,6 @@ function creatingActivity(){
             }
         )
     }) ; 
-
     fetch_instance.then(response => response.text()).then(
         data=>{
             data = JSON.parse(data)

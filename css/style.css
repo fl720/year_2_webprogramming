@@ -109,3 +109,9 @@ button:hover {
     max-width: 220px;
     margin-bottom: 0px;
 }
+.Exercise{
+    background-color: #6279ea;
+}
+.Exercise.hover {
+    background-color: #5061c7;
+}

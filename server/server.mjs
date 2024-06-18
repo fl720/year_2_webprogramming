@@ -87,9 +87,8 @@ app.post("/signup" , async (req , res ) => {
 
 app.post("/get_history", async (req , res ) => {
   const user_id = req.body.user_id;
-  
   const DBdata = await mb.getHistorysInArray( user_id ) ; 
-  // console.log( DBdata ) ; 
+  // console.log(DBdata) ; 
   res.send( JSON.stringify(DBdata) ) ; 
 })
 
@@ -123,13 +122,67 @@ app.post("/create_hiit" , async ( req , res ) => {
   const shared = req.body.shared ;  
 
   const new_activity = { user_id , name , description, shared }
-  const update = await mb.updateActivity( new_activity ) ; 
-  console.log( update ) ; 
-  if( update != true ){
-    res.send( JSON.stringify({ update : false })) ; 
+
+  if( await mb.getActivity( name , user_id ) === false ){
+    // ONLY CREATE WITH ACTIVITY WITH DIFFERENT NAME
+    const update = await mb.updateActivity( new_activity ) ; 
+
+    if( update != true ){
+      res.send( JSON.stringify({ update : false })) ; 
+    } else {
+      const activity_id = await mb.getActivity( name , user_id ) ; 
+      const setting = { activity_id:activity_id['activity_id'], difficulty_level:'easy' , color: 'blue'  } ; 
+      const update_setting = await mb.updateSetting( setting )  ;
+
+      if ( update_setting != true ){
+        res.send( JSON.stringify({ update : false })) ; 
+      } else {
+        res.send( JSON.stringify({ update : true })) ;
+      }
+    }
   } else {
-    res.send( JSON.stringify({ update : true })) ;
+    res.send( JSON.stringify({ update : false })) ; 
   }
+})
+
+app.post("/update_setting", async ( req , res ) => {
+  const user_id =  req.body.user_id ;
+  const difficulty = req.body.difficulty ; 
+  const color = req.body.color ; 
+
+  const activityId_list = await mb.getAllActivitiesIDs( user_id ) ; 
+
+  const setting = { activity_id : 0 , difficulty_level : difficulty , color : color } ; 
+
+  activityId_list.forEach(  activity_id =>  {
+  setting.activity_id = activity_id;
+  mb.changeSetting(setting); // cannot use await here
+  }) ; 
+})
+
+app.post("/get_activities" , async( req , res ) => {
+  const user_id = req.body.user_id ; 
+  
+  const activityNames = await mb.getAllActivitiesNames( user_id ) ;
+  const any_activityId = await mb.getActivityId( activityNames[0] , user_id ) ; 
+  const setting = await mb.getSettingColor( any_activityId.activity_id ) ; 
+  const color = setting[0].color ; 
+  
+  res.send( JSON.stringify( {activityNames:activityNames,color:color}) ) ; 
+})
+
+app.post("/update_his" , async( req , res ) => {
+  const user_id = req.body.user_id ; 
+  const activityName =  req.body.activityName ;
+  const timestamp = req.body.dates ; 
+  const activity = await mb.getActivityId( activityName , user_id ) ; 
+  const id = activity.activity_id.toString() ; 
+
+  const activity_log = { user_id , id , timestamp } ;
+
+  const sta = await mb.updateHistory( activity_log ) ; 
+  
+  res.send(  JSON.stringify( { update : sta , activity_id : id } ) ) ; 
 })
 
 const port = 8080;

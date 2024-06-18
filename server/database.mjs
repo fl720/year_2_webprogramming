@@ -45,7 +45,7 @@ function insertTestData() {
     } ) 
 
     sql = 'INSERT INTO HIIT_settings( activity_id, difficulty_level , color ) VALUES (?,?,? ) ' ; 
-    db.run( sql , [1 , "medium" , "red" ] , (err)=> {
+    db.run( sql , [1 , "easy" , "blue" ] , (err)=> {
         if (err) return console.error(err.message) ; 
     } ) 
 
@@ -53,7 +53,6 @@ function insertTestData() {
     db.run( sql , [ 1 , 1 , "2008-11-11 13:23:44" ] , (err)=> {
         if (err) return console.error(err.message) ; 
     } ) 
-
 } 
 
 
@@ -196,6 +195,27 @@ export async function getAllActivitiesNames( user_id ) {
     });
 } ; 
 
+export async function getAllActivitiesIDs( user_id ) {
+    const sql = `SELECT activity_id FROM HIIT_activities where user_id = ? ` ; 
+    return new Promise((resolve, reject) => {
+        const results = [];
+        db.each(sql, [user_id], (err, row) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                
+                results.push(row.activity_id);
+            }
+        }, (err, numberOfRows) => {
+            if (err) {
+                reject(err.message);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+} ; 
+
 export async function getActivity( name , user_id ) {
     const sql = `SELECT * FROM HIIT_activities WHERE name = ? AND user_id = ?` ; 
     return new Promise((resolve, reject) => {
@@ -211,7 +231,23 @@ export async function getActivity( name , user_id ) {
     });
 } ;
 
+export async function getActivityId( name , user_id ) {
+    const sql = `SELECT activity_id FROM HIIT_activities WHERE name = ? AND user_id = ?` ; 
+    return new Promise((resolve, reject) => {
+        db.get(sql, [name , user_id], (err, row) => {
+            if (err) {
+                reject(err);
+            } else if (row) {
+                resolve(row);
+            } else {
+                resolve(false);
+            }
+        });
+    });
+} ;
+
 export async function getHistorys( user_id ) {
+    // console.log( `user_id : ${user_id}`)
     const sql = `SELECT * FROM History where user_id = ? ` ; 
     return new Promise((resolve, reject) => {
         const results = [];
@@ -219,6 +255,7 @@ export async function getHistorys( user_id ) {
             if (err) {
                 reject(err.message);
             } else {
+                // console.log( `row ${row}` ) ;
                 results.push(row);
             }
         }, (err) => {
@@ -233,7 +270,7 @@ export async function getHistorys( user_id ) {
 } ; 
 
 export async function getHistorysInArray( user_id ) {
-    const DBdata = await getHistorys( Number(user_id) ) ; 
+    const DBdata = await getHistorys( user_id ) ; //user_id in string
         
     const historyIds = [];
     const activityIds = [];
@@ -243,6 +280,7 @@ export async function getHistorysInArray( user_id ) {
         activityIds.push( item.activity_id);
         dates.push(item.dates);
     });
+    // console.log( `DBdata: ${DBdata}`)
 
     const activityTitles = await Promise.all(activityIds.map(id => getActivityNameFromId(id)));
     const dataObject = {
@@ -253,11 +291,11 @@ export async function getHistorysInArray( user_id ) {
     return dataObject ; 
 }
 
-export async function getSettings( user_id ) {
-    const sql = `SELECT * FROM HIIT_settings where user_id = ? ` ; 
+export async function getSettingColor( activity_id ) {
+    const sql = `SELECT color FROM HIIT_settings where activity_id = ? ` ; 
     return new Promise((resolve, reject) => {
         const results = [];
-        db.each(sql, [user_id], (err, row) => {
+        db.each(sql, [activity_id], (err, row) => {
             if (err) {
                 reject(err.message);
             } else {
@@ -287,7 +325,6 @@ export async function getActivityNameFromId( activity_id ) {
         });
     });
 } ;
-
 
 export async function updateUsertoDB(userDetails) {
     const { f_name , l_name, username, password, email } = userDetails;
@@ -322,24 +359,36 @@ export async function updateActivity( activity) {
     }) ; 
 }
 
-export function updateSetting( setting ) {
+export async function updateSetting( setting ) {
     const { activity_id, difficulty_level , color  } = setting;
 
     const sql = 'INSERT INTO HIIT_settings (activity_id, difficulty_level , color  ) VALUES (?,?,? ) ' ; 
-    db.run( sql , [activity_id, difficulty_level , color ] , (err)=> {
-        if (err) return console.error(err.message) ; 
-    } ) ; 
+    return new Promise((resolve, reject) => {
+        db.run( sql , [activity_id, difficulty_level , color ] , (err)=> {
+        if (err) {
+            console.error(err.message) ;  
+            reject(err);
+        } else {
+            resolve(true);
+        }
+    });
+}) ; 
 }
 
 export function updateHistory( activity_log ) {
-    const { user_id , activity_id , dates } = activity_log;
-
+    const { user_id , id , timestamp } = activity_log;
     const sql = 'INSERT INTO History( user_id , activity_id , dates ) VALUES (?,?,? ) ' ; 
-    db.run( sql , [user_id , activity_id , dates ] , (err)=> {
-        if (err) return console.error(err.message) ; 
-    } ) ; 
+    return new Promise((resolve, reject) => {
+        db.run( sql , [user_id , id , timestamp ] , (err)=> {
+            if (err) {
+                console.error(err.message) ;  
+                reject(err);
+            } else {
+                resolve(true);
+            }
+        });
+    }) ; 
 }
-
 
 // -------------- CHANGE DATA ---------------
 export function changeUsername( newInfo ) {  
@@ -401,18 +450,18 @@ export function changeActivityShareability( newInfo ) {
 
 // -------------- DELETION ---------------
 export function deleteUser( userDetail ) { 
-    const { username } = userDetail ; 
+    const { user_id } = userDetail ; 
 
-    const sql = 'DELETE FROM users WHERE username = ? ' ; 
-    db.run( sql, [username] , (err)=> {
+    const sql = 'DELETE FROM users WHERE user_id = ? ' ; 
+    db.run( sql, [user_id] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
 }
 
-export function deleteActivity( id ) { 
-    const { activity_id } = id ; 
+export function deleteActivity( activity_id ) { 
 
-    const sql = 'DELETE FROM HIIT_activities WHERE activity_id = ? ' ; 
+    let sql ; 
+    sql = 'DELETE FROM HIIT_activities WHERE activity_id = ? ' ; 
     db.run( sql, [activity_id] , (err)=> {
         if (err) return console.error(err.message) ;
     } ) ; 
@@ -446,4 +495,3 @@ function closeDB()
         console.log('Close database connection');
     }); 
 }
-
